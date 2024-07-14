@@ -1,0 +1,31 @@
+services:
+  redis-server:
+    image: 'redis:latest'
+    container_name: redis-server
+    hostname: redis-server
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  sync-playback:
+    image:  'sync-playback:0.4'
+    container_name: sync-playback
+    hostname: sync-playback
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - CREATOR_PASSWORD=${CREATOR_PASSWORD}
+    ports:
+      - "9543:9543"
+    depends_on:
+      redis-server:
+        condition: service_healthy
+    dns:
+      - 8.8.8.8
+
+  

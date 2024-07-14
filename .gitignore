@@ -1,0 +1,11 @@
+.vscode/*
+
+sync-be/*.tar
+sync-be/src/.env
+sync-be/.env
+sync-be/bin
+sync-be/pkg
+
+
+sync-fe/*.env*
+sync-fe/dist
